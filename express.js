@@ -7,6 +7,7 @@ const initializeDatabase = require('./database');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const examesRouter = require('./routes/exames.routes')
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/exames', examesRouter);
 
 module.exports = app;
