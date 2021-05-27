@@ -11,7 +11,7 @@ const examesRouter = require('./routes/exames.routes')
 
 const app = express();
 
-initializeDatabase('mongodb+srv://admin:admin@mock1.gvdkc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+initializeDatabase('mongodb+srv://admin:admin@mock1.gvdkc.mongodb.net/Laboratorio1?retryWrites=true&w=majority');
 
 app.use(logger('dev'));
 app.use(express.json());
