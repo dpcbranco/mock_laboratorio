@@ -7,11 +7,11 @@ const initializeDatabase = require('./database');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const examesRouter = require('./routes/exames.routes')
+const examesRouter = require('./routes/exames.routes');
 
 const app = express();
 
-initializeDatabase('mongodb+srv://admin:admin@mock1.gvdkc.mongodb.net/Laboratorio1?retryWrites=true&w=majority');
+initializeDatabase(process.env.DBURL);
 
 app.use(logger('dev'));
 app.use(express.json());

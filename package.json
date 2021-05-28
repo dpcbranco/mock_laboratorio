@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/app.js",
+    "start": "node -r dotenv/config ./bin/app.js",
     "dev": "nodemon"
   },
   "dependencies": {
@@ -14,6 +14,7 @@
     "morgan": "~1.9.1"
   },
   "devDependencies": {
+    "dotenv": "^10.0.0",
     "nodemon": "^2.0.7"
   }
 }
