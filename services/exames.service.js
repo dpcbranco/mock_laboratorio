@@ -8,4 +8,4 @@ const getExamesPorPaciente = async (cpf) => {
 
 module.exports = {
   getExamesPorPaciente
-}
+};
