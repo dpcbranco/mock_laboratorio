@@ -6,7 +6,7 @@ module.exports = new Schema({
     medicoSolicitante: String,
     medicoLaudador: String,
     laudo: String,
-    dataExame: Date
+    dataExame: Number
 }, {
     versionKey: false
 })
