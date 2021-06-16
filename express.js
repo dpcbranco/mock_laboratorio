@@ -6,6 +6,7 @@ const logger = require('morgan');
 const initializeDatabase = require('./database');
 
 const examesRouter = require('./routes/exames.routes');
+const tipoExamesRouter = require('./routes/tipoExames.routes');
 const medicosRouter = require('./routes/medico.routes');
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/exames', examesRouter);
+app.use('/tipoExames', tipoExamesRouter)
 app.use('/medicos', medicosRouter);
 
 module.exports = app;
