@@ -6,7 +6,7 @@
     "lab1": "node -r dotenv/config ./bin/app.js dotenv_config_path=.Lab1.env",
     "lab2": "node -r dotenv/config ./bin/app.js dotenv_config_path=.Lab2.env",
     "lab3": "node -r dotenv/config ./bin/app.js dotenv_config_path=.Lab3.env",
-    "start": "node -r dotenv/config ./bin/app.js",
+    "start": "node ./bin/app.js",
     "dev": "nodemon"
   },
   "dependencies": {
