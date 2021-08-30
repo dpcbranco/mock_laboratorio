@@ -6,6 +6,10 @@ const getExamesPorPaciente = async (cpf) => {
     })
 }
 
+const saveExamFile = (req, res) => {
+    
+}
+
 module.exports = {
-    getExamesPorPaciente
+    getExamesPorPaciente, saveExamFile
 };
