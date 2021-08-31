@@ -1,31 +1,37 @@
-const Grid = require('gridfs-stream');
+const exameService = 
+    process.env.LAB == 1 ? require('../services/examesLab1.service'):
+        process.env.LAB == 2 ? require('../services/examesLab2.service'):
+            process.env.LAB == 3 ? require('../services/examesLab3.service'):
+                null;
 
-const exameService = process.env.LAB == 1 ? require('../services/examesLab1.service'):
-                     process.env.LAB == 2 ? require('../services/examesLab2.service'):
-                     process.env.LAB == 3 ? require('../services/examesLab3.service'):
-                     null;
 const getAllExames = async (req, res) => {
     const exames = await exameService.getExamesPorPaciente(req.query.paciente);
     if (exames.length === 0)
-        return res.status(404).send({error: "Paciente sem exames"})
+        return res.status(404).send({error: 'Paciente sem exames'});
     return res.send(exames);
-}
+};
+
+const getExameById = async (req, res) => {
+    return res.send(await exameService.getExameById(req.params.exameId));
+};
 
 const uploadExames = async (req, res) => {
-    const exame = await exameService.getExamesPorPaciente(req.params.examId)[0];
+    const exame = await exameService.getExameById(req.params.exameId);
     if (!exame)
-        return res.status(404).send({error: "Exam not found"})
+        return res.status(404).send({error: 'Exam not found'});
 
-    const savedFile = exameService.saveExamFile(req, res);
+    const savedFile = await exameService.saveExamFile(req, res);
 
     if (savedFile.error)
         return res.status(500).send(savedFile);
 
-    exame.arquivos ? exame.arquivos.add(savedFile._id) : exame.arquivos = [savedFile._id]
+    exame.arquivos ? exame.arquivos.add(savedFile._id) : exame.arquivos = [savedFile.id];
     
-    return await exameService.updateExame(exame);
-}
+    return await exameService.updateExame(exame) ?
+        res.send() : 
+        res.status(500).send({error: 'Failed to update'});
+};
 
 module.exports = {
-    getAllExames, uploadExames
-}
+    getAllExames, uploadExames, getExameById
+};
