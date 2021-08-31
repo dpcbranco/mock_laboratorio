@@ -17,19 +17,27 @@ const getExameById = async (req, res) => {
 
 const uploadExames = async (req, res) => {
     const exame = await exameService.getExameById(req.params.exameId);
+    const uploadStream = await exameService.fileUploadStream(
+        req.file.originalname, req.file.mimetype
+    );
+
     if (!exame)
         return res.status(404).send({error: 'Exam not found'});
 
-    const savedFile = await exameService.saveExamFile(req, res);
+    req.pipe(
+        uploadStream
+            .on('finish', async (savedFile) =>  {
+                exame.arquivos ? exame.arquivos.push(savedFile._id) : exame.arquivos = [savedFile.id];
+                const updatedExame = await exameService.updateExame(exame); 
+                return !updatedExame.errors ?
+                    res.send() : 
+                    res.status(500).send(
+                        {message: 'Failed to update exam', errors: updatedExame.errors}
+                    );
+            })
+            .on('error', (error) => {return res.status(500).send(error);})
+    );
 
-    if (savedFile.error)
-        return res.status(500).send(savedFile);
-
-    exame.arquivos ? exame.arquivos.add(savedFile._id) : exame.arquivos = [savedFile.id];
-    
-    return await exameService.updateExame(exame) ?
-        res.send() : 
-        res.status(500).send({error: 'Failed to update'});
 };
 
 module.exports = {

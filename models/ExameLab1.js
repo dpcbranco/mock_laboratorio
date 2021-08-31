@@ -20,7 +20,7 @@ module.exports = new Schema(
         laudador: String,
         laudadorCRM: String,
         planoSaude: String,
-        exames: [ObjectId]
+        arquivos: [ObjectId]
     },
     {
         versionKey: false

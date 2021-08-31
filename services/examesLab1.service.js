@@ -12,26 +12,19 @@ const getExameById = async (id) => {
     return await exameModel.findById(id);
 };
 
-const saveExamFile = async (req) => {
+const fileUploadStream = async (fileName, mimeType) => {
     const gfs = new mongo.GridFSBucket(connection.db, {bucketName: 'arquivos'});
-    const uploadStream =  gfs.openUploadStream(
-        req.file.originalname,
-        { contentType: req.file.mimetype }
+    return gfs.openUploadStream(
+        fileName,
+        { contentType: mimeType }
     );
 
-    return req.pipe(
-        uploadStream.on('finish', (savedFile) =>  {
-            return savedFile; 
-        })
-            .on('error', (error) => error)
-    );
 };
 
 const updateExame = async (exame) => {
-    const exameDB = await exameModel.updateOne({_id: exame._id}, exame);
-    return exameDB.ok;
+    return await exame.save();
 };
 
 module.exports = {
-    getExamesPorPaciente, getExameById, saveExamFile, updateExame
+    getExamesPorPaciente, getExameById, fileUploadStream, updateExame
 };
