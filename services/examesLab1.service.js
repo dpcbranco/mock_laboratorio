@@ -1,35 +1,36 @@
 const Exame = require('../models/ExameLab1');
 const {connection, mongo} = require('mongoose');
-const Grid = require('gridfs-stream');
-const fs = require('fs');
-const exameModel = require('mongoose').model('exameLab1', Exame, "exames");
+const exameModel = require('mongoose').model('exameLab1', Exame, 'exames');
 
 const getExamesPorPaciente = async (cpf) => {
     return await exameModel.find({
-        "paciente.cpf": cpf
-    })
-}
+        'paciente.cpf': cpf
+    });
+};
 
 const getExameById = async (id) => {
-    return await exameModel.findbyId(id);
-}
+    return await exameModel.findById(id);
+};
 
-const saveExamFile = async (req, res) => {
-    const gfs = Grid(connection.db, mongo);
-    const filename = req.file.originalname;
-
-    gfs.collection("arquivos");
+const saveExamFile = async (req) => {
+    const gfs = new mongo.GridFSBucket(connection.db, {bucketName: 'arquivos'});
+    const uploadStream =  gfs.openUploadStream(
+        req.file.originalname,
+        { contentType: req.file.mimetype }
+    );
 
     return req.pipe(
-        gfs.createWriteStream({ filename: req.file.originalname, metadata: { exameId: req.params.examId } })
-            .on('close', (savedFile) =>  savedFile)
+        uploadStream.on('finish', (savedFile) =>  {
+            return savedFile; 
+        })
             .on('error', (error) => error)
     );
-}
+};
 
 const updateExame = async (exame) => {
-    return await exameModel.update(exame);
-}
+    const exameDB = await exameModel.updateOne({_id: exame._id}, exame);
+    return exameDB.ok;
+};
 
 module.exports = {
     getExamesPorPaciente, getExameById, saveExamFile, updateExame

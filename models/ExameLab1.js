@@ -13,16 +13,16 @@ module.exports = new Schema(
         medicoSolicitante: String,
         medicoSolicitanteCRM: String,
         paciente: {
-        nome: String,
-        idade: Number,
-        cpf: String
+            nome: String,
+            idade: Number,
+            cpf: String
         },
         laudador: String,
         laudadorCRM: String,
         planoSaude: String,
-        laudo: String
+        exames: [ObjectId]
     },
     {
         versionKey: false
     }
-)
+);
