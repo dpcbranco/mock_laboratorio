@@ -7,6 +7,7 @@ const upload = multer();
 
 router.get('/', utils.isValidCPF, examesController.getAllExames);
 router.get('/:exameId', examesController.getExameById);
+router.get('/files/:fileId', examesController.getExameFileById);
 router.post('/upload/:exameId', upload.single('examFile') , examesController.uploadExames);
 
 module.exports = router;
