@@ -1,4 +1,5 @@
 const Schema = require('mongoose').Schema;
+const ObjectId = require('mongoose').ObjectId;
 
 module.exports = new Schema({
     exame: {
@@ -30,7 +31,8 @@ module.exports = new Schema({
         nrconvenio: String,
         vencimentoconvenio: String,
         profissao: String
-    }
+    },
+    arquivos: [ObjectId]
 }, {
     versionKey: false
 })

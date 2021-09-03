@@ -39,25 +39,16 @@ const uploadExames = async (req, res) => {
         })
         .on('error', (error) => {return res.status(500).send(error);}));
             
-    // req.pipe(
-    //     uploadStream
-    //         .on('finish', async (savedFile) =>  {
-    //             exame.arquivos ? exame.arquivos.push(savedFile._id) : exame.arquivos = [savedFile.id];
-    //             const updatedExame = await exameService.updateExame(exame); 
-    //             return !updatedExame.errors ?
-    //                 res.send() : 
-    //                 res.status(500).send(
-    //                     {message: 'Failed to update exam', errors: updatedExame.errors}
-    //                 );
-    //         })
-    //         .on('error', (error) => {return res.status(500).send(error);})
-    // );
-
 };
 
 const getExameFileById = async (req, res) => {
-    const file = await exameService.findFileById(req.params.fileId);
-
+    let file;
+    try {
+        file = await exameService.findFileById(req.params.fileId);
+    }catch(error){
+        return res.status(400).send({error:'Invalid ID'})
+    }
+    
     if (!file)
         return res.status(404).send({error: 'File not found'});
     if (file.error)
